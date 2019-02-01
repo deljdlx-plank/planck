@@ -86,6 +86,9 @@ class Extension
     }
 
 
+    /**
+     * @return Route[]
+     */
     public function getRoutes()
     {
         $routes = [];
@@ -122,7 +125,6 @@ class Extension
 
         foreach ($aspects as $path) {
 
-            include($path);
 
             $aspectName = str_replace('.php', '', basename($path));
             $className = $this->namespace.'\Aspect\\'.$aspectName;

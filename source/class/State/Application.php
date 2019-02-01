@@ -13,7 +13,7 @@ class Application extends \Planck\State
     protected $application;
 
 
-    public function __construct(Application $application)
+    public function __construct(\Planck\Application $application)
     {
         $this->application = $application;
     }

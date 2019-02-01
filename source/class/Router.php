@@ -54,7 +54,7 @@ class Router extends \Phi\Routing\Router
 
             return true;
 
-            $application = Application::getInstance();
+            $application = $this->getApplication();
 
             if($application->exists('user')) {
                 if ($application->get('user')->getId()) {

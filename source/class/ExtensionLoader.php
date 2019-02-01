@@ -55,14 +55,19 @@ class ExtensionLoader
     }
 
 
+    /**
+     * @param $extensionName
+     * @param $extensionPath
+     * @param string $pattern
+     * @return Extension
+     * @throws Exception
+     */
     public function loadExtension($extensionName, $extensionPath, $pattern = '')
     {
 
         if(array_key_exists($extensionName, $this->loadedExtensions)) {
             throw new Exception('Extension '.$extensionName.' already loaded');
         }
-
-
 
 
         if(!is_dir($extensionPath)) {

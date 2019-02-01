@@ -2,13 +2,18 @@
 
 
 namespace Planck;
+use Phi\HTTP\Header;
 use Phi\Routing\Request;
 use Planck\Model\Model;
 use Planck\DataLayer;
 use Planck\Model\Repository;
+use Planck\State\Application\Execution;
+use Planck\Traits\HasAspect;
 
 class Application extends \Phi\Application\Application
 {
+
+    use HasAspect;
 
 
     const DEFAULT_MODULE_FILEPATH = 'source/class/Module';
@@ -22,6 +27,9 @@ class Application extends \Phi\Application\Application
     const STATUS_404 = 404;
 
 
+    const STATE_EXECUTION_NAME = Execution::class;
+
+
     /**
      * @var Model
      */
@@ -32,12 +40,6 @@ class Application extends \Phi\Application\Application
      * @var ApplicationState[]
      */
     protected $states;
-
-
-    /**
-     * @var Aspect[]
-     */
-    protected $aspects = array();
 
 
     /**
@@ -60,49 +62,29 @@ class Application extends \Phi\Application\Application
         parent::__construct(realpath($path), $instanceName, $autobuild);
 
 
+        $this->states[static::STATE_EXECUTION_NAME] = new Execution($this);
+
+
 
         $this->addEventListener(self::EVENT_RUN_BEFORE_ROUTING, array($this, 'doBeforeRouting'));
         $this->addEventListener(self::EVENT_RUN_AFTER_ROUTING, array($this, 'doAfterRouting'));
         $this->addEventListener(self::EVENT_NO_RESPONSE, array($this, 'doOnNoResponse'));
 
+        $this->addEventListener(self::EVENT_SUCCESS, array($this, 'doOnSuccess'));
+
+
+
     }
 
 
-
-
-    //=======================================================
-
-    public function addAspect(\Planck\Aspect\Application $aspect, $alias = null)
+    public function getStatus()
     {
-        if($alias === null) {
-            $alias = get_class($aspect);
-        }
-        $this->aspects[$alias] = $aspect;
-        return $this;
+        return $this->states[static::STATE_EXECUTION_NAME];
     }
 
-    /**
-     * @param $name
-     * @return Aspect
-     * @throws Exception
-     */
-    public function getAspect($name)
-    {
-        if(array_key_exists($name, $this->aspects)) {
-            return $this->aspects[$name];
-        }
-        else {
-            throw new Exception('No aspect with name '.$name);
-        }
-    }
 
-    public function hasAspect($aspectName)
-    {
-        if(array_key_exists($aspectName, $this->aspects)) {
-            return true;
-        }
-        return false;
-    }
+
+
 
 
     //=======================================================
@@ -203,9 +185,15 @@ class Application extends \Phi\Application\Application
     //=======================================================
 
 
+    public function doOnSuccess($event)
+    {
+        $this->getStatus()->ok(true);
+    }
+
     public function doOnNoResponse($event)
     {
 
+        $this->getStatus()->notFound(true);
     }
 
 

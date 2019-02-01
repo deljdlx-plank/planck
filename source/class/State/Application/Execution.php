@@ -1,9 +1,10 @@
 <?php
 namespace Planck\State\Application;
 
+
+
 use Planck\Application;
-use PlanckState\ApplicationState;
-use PlanckState\Dimension;
+use Planck\State\Dimension;
 
 class Execution extends \Planck\State\Application
 {
@@ -12,41 +13,55 @@ class Execution extends \Planck\State\Application
     {
         parent::__construct($application);
 
-        /*
         $this->addDimension(
-            new Dimension('step')
+            new Dimension('forbidden')
         );
 
         $this->addDimension(
-            new Dimension('status')
+            new Dimension('notFound')
         );
 
         $this->addDimension(
-            new Dimension('isLogged')
+            new Dimension('ok')
         );
-
-        $this->addDimension(
-            new Dimension('user')
-        );
-
-
-        $this->addDimension(
-            new Dimension('content')
-        );
-
-
-
-        $this->addDimension(
-            new Dimension('routes')
-        );
-
-        $this->addDimension(
-            new Dimension('errors')
-        );
-        */
-
-
-
     }
+
+    public function ok($value = null)
+    {
+        if($value !== null) {
+            $this->setValue('ok', $value);
+            return $this;
+        }
+        else {
+            return $this->getValue('ok');
+        }
+    }
+
+    public function notFound($value = null)
+    {
+        if($value !== null) {
+            $this->setValue('notFound', $value);
+            return $this;
+        }
+        else {
+            return $this->getValue('notFound');
+        }
+    }
+
+
+
+    public function forbidden($value = null)
+    {
+        if($value !== null) {
+            $this->setValue('forbidden', $value);
+            return $this;
+        }
+        else {
+            return $this->getValue('forbidden');
+        }
+    }
+
+
+
 
 }

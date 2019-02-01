@@ -4,6 +4,8 @@ namespace Planck;
 
 
 use Phi\Event\Event;
+use Planck\State\Dimension;
+use Planck\State\DimensionValue;
 use Planck\Traits\Listenable;
 
 class State
