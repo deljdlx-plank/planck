@@ -37,12 +37,6 @@ class ExtensionLoader
 
 
 
-    public function setExtensionFilepath($path)
-    {
-        $this->extentionFilepath = $path;
-        return $this;
-    }
-
     public function isExtensionLoaded($extensionName)
     {
         if(array_key_exists($extensionName, $this->loadedExtensions)) {
@@ -61,14 +55,15 @@ class ExtensionLoader
     }
 
 
-    public function loadExtension($extensionName, $register = false, $pattern = '')
+    public function loadExtension($extensionName, $extensionPath, $pattern = '')
     {
+
         if(array_key_exists($extensionName, $this->loadedExtensions)) {
             throw new Exception('Extension '.$extensionName.' already loaded');
         }
 
-        $baseName = basename($extensionName);
-        $extensionPath = $this->extentionFilepath.'/'.$baseName;
+
+
 
         if(!is_dir($extensionPath)) {
             throw new Exception('Can not load extension '.$extensionName.'. Path '.$extensionPath.' does not exists');
@@ -85,14 +80,13 @@ class ExtensionLoader
 
 
         $this->loadedExtensions[$extensionName] = $extension;
-
-        if($register) {
-            $this->getApplication()->addExtension($extension, $pattern);
-        }
+        $this->getApplication()->addExtension($extension, $pattern);
 
         return $extension;
 
     }
+
+
 
 
 }
