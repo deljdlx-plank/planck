@@ -62,7 +62,7 @@ class ExtensionLoader
      * @return Extension
      * @throws Exception
      */
-    public function loadExtension($extensionName, $extensionPath, $pattern = '')
+    public function loadExtension($extensionName, $extensionPath)
     {
 
         if(array_key_exists($extensionName, $this->loadedExtensions)) {
@@ -85,7 +85,7 @@ class ExtensionLoader
 
 
         $this->loadedExtensions[$extensionName] = $extension;
-        $this->getApplication()->addExtension($extension, $pattern);
+
 
         return $extension;
 

@@ -2,15 +2,14 @@
 
 
 namespace Planck;
-use Phi\HTTP\Header;
+use Phi\Core\Interfaces\Renderer;
 use Phi\Routing\Request;
 use Planck\Model\Model;
-use Planck\DataLayer;
 use Planck\Model\Repository;
 use Planck\State\Application\Execution;
 use Planck\Traits\HasAspect;
 
-class Application extends \Phi\Application\Application
+class Application extends \Phi\Application\Application implements Renderer
 {
 
     use HasAspect;
@@ -24,10 +23,9 @@ class Application extends \Phi\Application\Application
     const EVENT_BEFORE_LOADING_MODULE = 'EVENT_BEFORE_LOADING_MODULE';
     const EVENT_AFTER_LOADING_MODULE = 'EVENT_AFTER_LOADING_MODULE';
 
-    const STATUS_404 = 404;
-
 
     const STATE_EXECUTION_NAME = Execution::class;
+
 
 
     /**
@@ -48,6 +46,14 @@ class Application extends \Phi\Application\Application
     protected $extensions =array();
 
 
+    /**
+     * @var Renderer
+     */
+    protected $renderer;
+
+
+
+
 
 
 
@@ -66,15 +72,24 @@ class Application extends \Phi\Application\Application
 
 
 
+        $this->addEventListener(self::EVENT_BEFORE_INITIALIZE, array($this, 'doBeforeInitialize'));
+
         $this->addEventListener(self::EVENT_RUN_BEFORE_ROUTING, array($this, 'doBeforeRouting'));
         $this->addEventListener(self::EVENT_RUN_AFTER_ROUTING, array($this, 'doAfterRouting'));
         $this->addEventListener(self::EVENT_NO_RESPONSE, array($this, 'doOnNoResponse'));
 
         $this->addEventListener(self::EVENT_SUCCESS, array($this, 'doOnSuccess'));
 
-
-
     }
+
+
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->session = new \Planck\Session();
+    }
+
 
 
     public function getStatus()
@@ -185,6 +200,11 @@ class Application extends \Phi\Application\Application
     //=======================================================
 
 
+    public function doBeforeInitialize($event)
+    {
+
+    }
+
     public function doOnSuccess($event)
     {
         $this->getStatus()->ok(true);
@@ -266,6 +286,33 @@ class Application extends \Phi\Application\Application
     }
 
 
+    //=======================================================
+    public function setRenderer(Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
+    /**
+     * @return Renderer
+     */
+    public function getRenderer()
+    {
+        if(!$this->renderer) {
+            $renderer = new \Phi\Core\Renderer();
+            $renderer->setBuffer($this->getOutput());
+            $this->setRenderer($renderer);
+        }
+        return $this->renderer;
+    }
+
+    public function render()
+    {
+        return $this->getRenderer()->render();
+    }
+
+    //=======================================================
+
+
 
 
     public function run(Request $request = null, array $variables = array(), $flush = false)
@@ -292,12 +339,6 @@ class Application extends \Phi\Application\Application
         }
 
         return $this;
-    }
-
-
-    protected function initialize()
-    {
-        $this->session = new \Planck\Session();
     }
 
 

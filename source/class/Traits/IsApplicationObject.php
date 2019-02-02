@@ -5,6 +5,7 @@ namespace Planck\Traits;
 
 
 use Planck\Application;
+use Planck\ApplicationRegistry;
 
 trait IsApplicationObject
 {
@@ -23,6 +24,7 @@ trait IsApplicationObject
      */
     public static function getDefaultApplication()
     {
+        return ApplicationRegistry::getInstance();
         return Application::getInstance();
     }
 
