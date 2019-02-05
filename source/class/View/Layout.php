@@ -114,6 +114,7 @@ class Layout extends Document
 
         $javascripts = $this->componentManager->getJavascripts();
 
+
         foreach ($javascripts as $javascript) {
             $javascriptKey = $javascript->getSource();
 

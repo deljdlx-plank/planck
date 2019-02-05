@@ -3,8 +3,12 @@
 
 namespace Planck\Model;
 
+use Planck\Traits\IsApplicationObject;
+
 class Dataset extends \Phi\Model\Dataset
 {
+
+    use IsApplicationObject;
 
     /** @var  Repository */
     protected $repository;
@@ -12,7 +16,7 @@ class Dataset extends \Phi\Model\Dataset
     public function loadForeignEntity($foreignRepositoryName, $foreignKey, $targetFieldName)
     {
 
-        $foreignRepository = getRepository($foreignRepositoryName);
+        $foreignRepository = $this->getApplication()->getModelRepository($foreignRepositoryName);
 
         $values = array();
         foreach ($this->getAll() as $entity) {
@@ -38,10 +42,12 @@ class Dataset extends \Phi\Model\Dataset
     }
 
 
+    /*
     public function loadUsers()
     {
         return $this->loadForeignEntity('User', 'user_id', '__user');
     }
+    */
 
 
     public function wrapEntity(Entity $entity)
