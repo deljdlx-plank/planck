@@ -63,6 +63,7 @@ class Layout extends Document
             if($resources = $response->getExtraData('resources')) {
                 foreach ($resources as $resource) {
                     if($resource instanceof \Phi\HTML\JavascriptFile) {
+
                         $this->addJavascriptFile($resource);
                     }
                     else if($resource instanceof CSSFile) {
@@ -100,40 +101,39 @@ class Layout extends Document
     }
 
 
-    public function compile()
+
+    protected function injectResources()
     {
-        parent::compile();
 
-        $components = $this->componentManager->getComponents();
 
+        $this->componentManager->registerComponent($this);
 
 
         $javascriptAnchor = $this->dom->find($this->bodyEndSelector);
 
 
-        foreach ($components as $component) {
+        $javascripts = $this->componentManager->getJavascripts();
 
-            foreach ($component->getJavascriptTags() as $javascript) {
+        foreach ($javascripts as $javascript) {
+            $javascriptKey = $javascript->getSource();
 
-                $javascriptKey = $javascript->getSource();
-
-
-                if(!isset($this->injectedJavascripts[$javascriptKey])) {
-                    $this->injectedJavascripts[$javascriptKey] = true;
-                    $javascriptAnchor->before($javascript);
-                }
-            }
-            foreach ($component->getCSSTags() as $css) {
-
-                $cssKey = $css->getKey();
-
-                if(!isset($this->injectedCSS[$cssKey])) {
-                    $this->injectedCSS[$cssKey] = true;
-                    $this->dom->head->append($css->render()."\n");
-                }
-
+            if(!isset($this->injectedJavascripts[$javascriptKey])) {
+                $this->injectedJavascripts[$javascriptKey] = true;
+                $javascriptAnchor->before($javascript);
             }
         }
+
+        $cssList = $this->componentManager->getCSS();
+        foreach ($cssList as $css) {
+            $this->dom->head->append($css->render()."\n");
+        }
+
+    }
+
+
+    public function compile()
+    {
+        parent::compile();
 
     }
 

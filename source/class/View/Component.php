@@ -36,6 +36,8 @@ class Component extends \Phi\HTML\Component
         $this->application = $this->getApplication();
 
 
+
+
         $this->initialize();
 
 
@@ -46,8 +48,10 @@ class Component extends \Phi\HTML\Component
             $this->manager = $this->getDefaultComponentManager();
         }
 
-
         $this->manager->registerComponent($this);
+
+
+
 
 
 

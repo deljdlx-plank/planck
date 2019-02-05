@@ -26,7 +26,14 @@ trait HasLocalResource
         $cssLoaderURL = $this->getFromContainer('css-loader-url' );
 
         $url = $cssLoaderURL.'&css='.$cryptedCSS;
-        $cssInstance = new CSSFile($url);
+
+
+        $data = array(
+            'data-name' => $css
+        );
+        $data = null;
+        $cssInstance = new CSSFile($url, $data);
+
 
         $cssInstance->setKey($css);
 
@@ -50,7 +57,14 @@ trait HasLocalResource
         $cssLoaderURL = $this->getFromContainer('javascript-loader-url' );
 
         $url = $cssLoaderURL.'&javascript='.$cryptedJavascript;
-        $javascriptInstance = new JavascriptFile($url);
+
+        $data = array(
+           'data-name' => $javascript
+        );
+
+        $data = null;
+
+        $javascriptInstance = new JavascriptFile($url, $data);
 
         $javascriptInstance->setKey($javascript);
         return $javascriptInstance;
