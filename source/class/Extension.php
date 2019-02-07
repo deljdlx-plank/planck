@@ -17,6 +17,10 @@ class Extension
 
     protected $autoloader;
 
+
+    protected $frontPackages = [];
+
+
     /**
      * @var Module[]
      */
@@ -245,6 +249,14 @@ class Extension
         return $assets;
 
 
+    }
+
+
+    public function addFrontPackage($package)
+    {
+        $key = get_class($package);
+        $this->frontPackages[$key] = $package;
+        return $this;
     }
 
 

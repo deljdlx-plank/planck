@@ -121,6 +121,7 @@ class Layout extends Document
             if(!isset($this->injectedJavascripts[$javascriptKey])) {
                 $this->injectedJavascripts[$javascriptKey] = true;
                 $javascriptAnchor->before($javascript);
+                $javascriptAnchor->before("\n");
             }
         }
 
