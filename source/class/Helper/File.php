@@ -53,16 +53,20 @@ class File
 
         if(!$normalize) {
             $files = glob($pattern, $flags);
+            //sort($files, SORT_NATURAL);
         }
         else {
             $temp =  glob($pattern, $flags);
+
+            //sort($temp, SORT_NATURAL);
+
             $files = [];
             foreach ($temp as $path) {
                 $files[] = str_replace('\\', '/', $path);
             }
         }
 
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR) as $dir) {
             $files = array_merge($files, static::rglob($dir.'/'.basename($pattern), $flags, $normalize));
         }
         return $files;
