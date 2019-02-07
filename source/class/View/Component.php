@@ -154,16 +154,6 @@ class Component extends \Phi\HTML\Component
     {
         return new ComponentManager();
     }
-
-
-    public function addFrontPackage($package)
-    {
-        $key = get_class($package);
-        $this->frontPackages[$key] = $package;
-        return $this;
-    }
-
-
-
-
 }
+
+

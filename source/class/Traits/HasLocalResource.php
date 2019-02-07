@@ -6,9 +6,25 @@
 
 use Phi\HTML\CSSFile;
 use Phi\HTML\JavascriptFile;
+use Planck\View\Package;
 
 trait HasLocalResource
 {
+
+    /**
+     * @var Package[]
+     */
+    protected $frontPackages = [];
+
+
+
+
+    public function addFrontPackage(Package $package)
+    {
+        $key = get_class($package);
+        $this->frontPackages[$key] = $package;
+        return $this;
+    }
 
 
     public function getLocalCSSFile($css)
