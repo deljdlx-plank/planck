@@ -27,6 +27,9 @@ trait HasLocalResource
     }
 
 
+    /*
+    //used for development concerns
+
     public function getLocalCSSFile($css)
     {
 
@@ -70,9 +73,9 @@ trait HasLocalResource
 
         $cryptedJavascript = $engine->encrypt($javascript);
 
-        $cssLoaderURL = $this->getFromContainer('javascript-loader-url' );
+        $loaderURL = $this->getFromContainer('javascript-loader-url' );
 
-        $url = $cssLoaderURL.'&javascript='.$cryptedJavascript;
+        $url = $loaderURL.'&javascript='.$cryptedJavascript;
 
         $data = array(
            'data-name' => $javascript
@@ -85,6 +88,7 @@ trait HasLocalResource
         $javascriptInstance->setKey($javascript);
         return $javascriptInstance;
     }
+    */
 
 
 }

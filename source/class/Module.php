@@ -150,6 +150,7 @@ class Module
     }
 
 
+    /*
     public function getAssets($getExtensionAssets = true)
     {
         $assets = [];
@@ -178,13 +179,9 @@ class Module
             $cssFile = $this->getLocalCSSFile($cssPath);
             $assets[] = $cssFile;
         }
-
-
-
         return $assets;
-
-
     }
+    */
 
 
 

@@ -117,10 +117,12 @@ class Router extends \Phi\Routing\Router
             }
         }
 
+        /*
         $assets = array_merge(
             $assets,
             $this->getModule()->getAssets(false)
         );
+        */
 
         return $assets;
     }

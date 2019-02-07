@@ -2,6 +2,8 @@
 
 namespace Planck;
 
+use Phi\HTML\CSSFile;
+use Phi\HTML\JavascriptFile;
 use Planck\Helper\File;
 use Planck\Traits\HasLocalResource;
 use Planck\Traits\IsApplicationObject;
@@ -12,13 +14,11 @@ class Extension
     use IsApplicationObject;
     use HasLocalResource;
 
+
     protected $namespace;
     protected $path;
 
     protected $autoloader;
-
-
-    protected $frontPackages = [];
 
 
     /**
@@ -64,15 +64,21 @@ class Extension
         return $this->path;
     }
 
-    public function getAssetsFilepath()
+    public function getAssetsFilepath($normalize = true)
     {
-        return realpath($this->getFilepath().'/asset');
+        $path = realpath($this->getFilepath().'/asset');
+        if(!$normalize) {
+            return $path;
+        }
+        else {
+            return str_replace('\\', '/', $path);
+        }
     }
 
 
     public function getJavascriptsFilepath()
     {
-        return realpath($this->getAssetsFilepath().'/javascript');
+        return $this->getAssetsFilepath().'/javascript';
     }
 
 
@@ -216,24 +222,24 @@ class Extension
 
         $assetPath = $this->path.'/asset';
 
-        /*
-        if(is_file($assetPath.'/javascript/Extension.js')) {
-            $script = $this->getLocalJavascriptFile($assetPath.'/javascript/Extension.js');
-            $assets[] = $script;
-        }
-        */
 
         $javascripts = glob($assetPath.'/javascript/*.js');
         foreach ($javascripts as $javascript) {
-            $script = $this->getLocalJavascriptFile($javascript);
+
+
+            $javascript = File::normalize($javascript);
+
+            $javascriptBasename = str_replace($this->getAssetsFilepath(), '', $javascript);
+
+            $script = $this->getExtensionJavascript($javascriptBasename);
             $assets[] = $script;
         }
-
 
 
         $javascripts = File::rglob($assetPath.'/javascript/class/*.js');
         foreach ($javascripts as $javascript) {
-            $script = $this->getLocalJavascriptFile($javascript);
+            $javascriptBasename = str_replace($this->getAssetsFilepath(), '', $javascript);
+            $script = $this->getExtensionJavascript($javascriptBasename);
             $assets[] = $script;
         }
 
@@ -241,25 +247,54 @@ class Extension
 
         $css = File::rglob($assetPath.'/css/*.css');
         foreach ($css as $cssPath) {
-            $cssFile = $this->getLocalCSSFile($cssPath);
+            $cssBasename = str_replace($this->getAssetsFilepath(), '', $cssPath);
+            $cssFile = $this->getExtensionCSS($cssBasename);
             $assets[] = $cssFile;
         }
-
-
         return $assets;
-
-
     }
 
 
-    public function addFrontPackage($package)
+
+    public function getExtensionCSS($css)
     {
-        $key = get_class($package);
-        $this->frontPackages[$key] = $package;
-        return $this;
+
+        $loaderURL = $this->getFromContainer('extension-css-loader-url' );
+
+        $url = $loaderURL.'&css='.$css.'&extension='.rawurlencode($this->getName());
+
+        $data = array(
+            'data-name' => $css
+        );
+
+        $data = null;
+
+        $cssInstance = new CSSFile($url, $data);
+
+        $cssInstance->setKey($css);
+        return $cssInstance;
     }
 
 
+
+    public function getExtensionJavascript($javascript)
+    {
+
+        $loaderURL = $this->getFromContainer('extension-javascript-loader-url' );
+
+        $url = $loaderURL.'&javascript='.$javascript.'&extension='.rawurlencode($this->getName());
+
+        $data = array(
+            'data-name' => $javascript
+        );
+
+        $data = null;
+
+        $javascriptInstance = new JavascriptFile($url, $data);
+
+        $javascriptInstance->setKey($javascript);
+        return $javascriptInstance;
+    }
 
 
 
