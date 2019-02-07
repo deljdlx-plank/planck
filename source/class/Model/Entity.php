@@ -5,6 +5,7 @@ namespace Planck\Model;
 
 
 use Phi\Traits\Introspectable;
+use Planck\Model\Exception\DoesNotExist;
 use Planck\Model\Interfaces\Timestampable as iTimestampable;
 use Planck\Model\Traits\Timestampable;
 use Planck\Traits\IsApplicationObject;
@@ -143,16 +144,25 @@ class Entity extends \Phi\Model\Entity implements iTimestampable
         return $this->primaryKeyName;
     }
 
-    public function loadById($id)
+    public function loadById($id, $isATry = false)
     {
-        $this->setValues(
-            $this->repository->getById(
-                $id
-            )->getValues()
-        );
-        foreach ($this->getValues() as $key => $value) {
-            $this->oldValues[$key] = $value;
-         }
+        try {
+            $this->setValues(
+                $this->repository->getById(
+                    $id
+                )->getValues()
+            );
+            foreach ($this->getValues() as $key => $value) {
+                $this->oldValues[$key] = $value;
+            }
+        }
+        catch(DoesNotExist $exception) {
+            if($isATry) {
+                return $this;
+            }
+            throw $exception;
+        }
+
 
 
         return $this;

@@ -6,6 +6,8 @@ namespace Planck\Model;
 use Phi\Database\Source;
 use Phi\Model\Entity;
 use Planck\Application;
+use Planck\Model\Exception\DoesNotExist;
+use Planck\Model\Exception\NotUnique;
 use Planck\Model\Interfaces\Timestampable;
 use Planck\Traits\IsApplicationObject;
 use Planck\Traits\Listenable;
@@ -388,10 +390,10 @@ class Repository extends \Phi\Model\Repository
         }
         else {
             if(count($records)) {
-                throw new \Exception('getBy() returned more than one record');
+                throw new NotUnique('getBy() returned more than one record');
             }
             else {
-                throw new \Exception('getBy() returned no record');
+                throw new DoesNotExist('getBy() returned no record');
             }
 
         }
@@ -426,7 +428,7 @@ class Repository extends \Phi\Model\Repository
         );
 
         if(empty($values)) {
-            throw new \UnexpectedValueException('No object ('.$this->getTableName().') with id = '.$id.' (type : '.get_class($this).')');
+            throw new DoesNotExist('No object ('.$this->getTableName().') with id = '.$id.' (type : '.get_class($this).')');
         }
 
 
