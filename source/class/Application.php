@@ -4,6 +4,8 @@
 namespace Planck;
 use Phi\Core\Interfaces\Renderer;
 use Phi\Routing\Request;
+use Planck\Exception\DoesNotExist;
+use Planck\Model\Entity;
 use Planck\Model\Model;
 use Planck\Model\Repository;
 use Planck\State\Application\Execution;
@@ -162,15 +164,29 @@ class Application extends \Phi\Application\Application implements Renderer
     {
         $routes = array();
 
+
+        $registeredRouters = [];
+
         foreach ($this->extensions as $extension) {
             $extensionRoutes = $extension->getRoutes();
             foreach ($extensionRoutes as $routeName => $route) {
+
+                $registeredRouters[get_class($route->getRouter())] = true;
+
                 $key = '/'.$routeName;
                 $routes[$key] = $route;
             }
-
-
         }
+
+        foreach ($this->routers as $router) {
+            if(array_key_exists(get_class($router), $registeredRouters)) {
+                continue;
+            }
+            foreach ($router->getRoutes() as $routeName => $route) {
+                $routes[$routeName] = $route;
+            }
+        }
+
         return $routes;
 
     }
@@ -186,13 +202,24 @@ class Application extends \Phi\Application\Application implements Renderer
 
 
         foreach ($routes as $key => $route) {
+
+
             if($key == $fingerPrint) {
                 return $route;
             }
         }
 
         return false;
+    }
 
+    public function buildRoute($routeName, array $parameters = array())
+    {
+        $route = $this->getRouteByFingerPrint($routeName);
+        if(!$route) {
+            throw new DoesNotExist('No route with name '.$routeName.' registered');
+        }
+
+        return $route->buildURL($parameters);
     }
 
 
@@ -246,7 +273,10 @@ class Application extends \Phi\Application\Application implements Renderer
     //=======================================================
 
 
-
+    /**
+     * @param $entityName
+     * @return Entity
+     */
     public function getModelEntity($entityName)
     {
         return $this->get('model')->getEntity($entityName);
@@ -258,7 +288,9 @@ class Application extends \Phi\Application\Application implements Renderer
      */
     public function getModelRepository($repositoryName)
     {
-        return $this->get('model')->getRepository($repositoryName);
+        $repository =  $this->get('model')->getRepository($repositoryName);
+
+        return $repository;
     }
 
     public function getModelInstanceByFingerPrint($fingerPrint)
@@ -267,6 +299,9 @@ class Application extends \Phi\Application\Application implements Renderer
     }
 
 
+
+
+    //=======================================================
 
     public function getUser($cast = null)
     {
