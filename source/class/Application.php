@@ -7,6 +7,7 @@ use Phi\Routing\Request;
 
 
 use Planck\Routing\Router;
+use Planck\Routing\Route;
 use Planck\Exception\DoesNotExist;
 use Planck\Model\Entity;
 use Planck\Model\Model;
