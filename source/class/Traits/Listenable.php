@@ -3,7 +3,7 @@ namespace Planck\Traits;
 
 
 use Phi\Traits\Introspectable;
-use Planck\Application;
+use Planck\Application\Application;
 
 Trait Listenable
 {

@@ -4,8 +4,8 @@
 namespace Planck\Traits;
 
 
-use Planck\Application;
-use Planck\ApplicationRegistry;
+use Planck\Application\Application;
+use Planck\Application\ApplicationRegistry;
 
 trait IsApplicationObject
 {

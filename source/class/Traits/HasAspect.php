@@ -16,7 +16,7 @@ trait HasAspect
 
     //=======================================================
 
-    public function addAspect(\Planck\Aspect\Application $aspect, $alias = null)
+    public function addAspect(\Planck\Aspect $aspect, $alias = null)
     {
         if($alias === null) {
             $alias = get_class($aspect);
