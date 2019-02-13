@@ -195,6 +195,7 @@ class Extension
      */
     public function getModule($moduleName)
     {
+
         if(array_key_exists($moduleName, $this->modules)) {
             return $this->modules[$moduleName];
         }

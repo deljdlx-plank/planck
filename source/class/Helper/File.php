@@ -66,9 +66,10 @@ class File
             }
         }
 
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR) as $dir) {
+        foreach (glob(dirname($pattern).'/*', GLOB_NOSORT ) as $dir) {
             $files = array_merge($files, static::rglob($dir.'/'.basename($pattern), $flags, $normalize));
         }
+
         return $files;
     }
 

@@ -3,6 +3,7 @@
 namespace Planck;
 
 
+use Planck\Exception\DoesNotExist;
 use Planck\Helper\File;
 use Planck\Helper\StringUtil;
 use Planck\Traits\HasLocalResource;
@@ -58,6 +59,11 @@ class Module
     }
 
 
+    public function getRouteByName()
+    {
+
+    }
+
     /**
      * @return Route[]
      */
@@ -66,11 +72,13 @@ class Module
 
         $routes = [];
 
-        foreach ($this->getRouters() as $router) {
+        foreach ($this->getRouters() as $routerName => $router) {
+
             foreach ($router->getRoutes() as $routeName => $route) {
                 $key =
                     StringUtil::camelCaseToSeparated($this->extension->getBaseName()).'/'.
-                    StringUtil::camelCaseToSeparated($this->getBaseName()).
+                    StringUtil::camelCaseToSeparated($this->getBaseName()).'/'.
+                    strtolower($routerName).
                     '['.$routeName.']';
                 $routes[$key] = $route;
             }
@@ -109,7 +117,7 @@ class Module
         foreach ($routers as $path) {
             include($path);
 
-            $routerName = basename(str_replace('.php', '', $path));
+            $routerName = strtolower(basename(str_replace('.php', '', $path)));
 
             $routerClassName = $this->namespace.'\Router\\'.$routerName;
 
@@ -133,14 +141,21 @@ class Module
     }
 
 
-
+    /**
+     * @param $routerName
+     * @return Router
+     * @throws DoesNotExist
+     */
     public function getRouter($routerName)
     {
+
+        $routerName = strtolower($routerName);
+
         if(array_key_exists($routerName, $this->routers)) {
             return $this->routers[$routerName];
         }
 
-        throw new Exception('Router '.$routerName.' does not exists');
+        throw new DoesNotExist('Router '.$routerName.' does not exists');
     }
 
     public function buildURL($routerName, $routeName, $parameters = array())

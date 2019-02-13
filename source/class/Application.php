@@ -89,6 +89,7 @@ class Application extends \Phi\Application\Application implements Renderer
     public function initialize()
     {
         parent::initialize();
+
         $this->session = new \Planck\Session();
     }
 
@@ -142,6 +143,10 @@ class Application extends \Phi\Application\Application implements Renderer
 
     public function getExtension($extensionName)
     {
+
+        //remove starting "\" in class name
+        $extensionName = preg_replace('`^\\\\`', '', $extensionName);
+
         if(array_key_exists($extensionName, $this->extensions)) {
             return $this->extensions[$extensionName];
         }
@@ -157,6 +162,24 @@ class Application extends \Phi\Application\Application implements Renderer
 
     //=======================================================
 
+    public function getExtensionsAssets()
+    {
+        $extensions = $this->getExtensions();
+        $assets = [];
+
+        foreach ($extensions as $extension) {
+            $extensionAssets = $extension->getAssets();
+            if(!empty($extensionAssets)) {
+                $assets = array_merge($assets, $extensionAssets);
+            }
+        }
+        return $assets;
+    }
+
+
+
+
+    //=======================================================
     /**
      * @return Route[]
      */

@@ -32,6 +32,24 @@ class StringUtil
 
 
 
+    public static function separatedToClassName($string, $separator = '-')
+    {
+        return preg_replace_callback('`('.$separator.'|^)(.)`',
+            function($matches) {
+
+                if($matches[1] == '-') {
+                    return '\\'.strtoupper($matches[2]);
+                }
+                else {
+                    return strtoupper($matches[2]);
+                }
+
+
+            }, $string
+        );
+    }
+
+
     public static function toCamelCase($string, $separator = '-', $upper = true)
     {
         if($upper) {
@@ -39,6 +57,7 @@ class StringUtil
         }
 
         $string = preg_replace_callback('`('.$separator.'.)`', function($matches) {
+
             $string = str_replace('-', '', $matches[1]);
             $string = strtoupper($string);
             return $string;
