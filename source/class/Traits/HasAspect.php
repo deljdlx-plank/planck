@@ -47,4 +47,38 @@ trait HasAspect
         }
         return false;
     }
+
+
+    /**
+     * @return \Planck\Traits\Aspect[]
+     */
+    public function getAspects()
+    {
+        return $this->aspects;
+    }
+
+
+
+
+
+    public function __call($name, $arguments)
+    {
+        foreach ($this->getAspects() as $aspect) {
+            if(method_exists($aspect, $name)) {
+                return call_user_func_array(
+                    array($aspect, $name),
+                    $arguments
+                );
+            }
+        }
+        throw new DoesNotExist(
+            '(In '.get_class($this).') Call to undefined method '.get_class($this).'::'.$name
+        );
+
+    }
+
+
+
+
+
 }
