@@ -4,7 +4,6 @@ namespace Planck;
 
 
 use Planck\Exception\DoesNotExist;
-use Planck\Helper\File;
 use Planck\Helper\StringUtil;
 use Planck\Traits\HasLocalResource;
 use Planck\Traits\IsApplicationObject;
@@ -59,10 +58,6 @@ class Module
     }
 
 
-    public function getRouteByName()
-    {
-
-    }
 
     /**
      * @return Route[]
@@ -76,6 +71,7 @@ class Module
 
             foreach ($router->getRoutes() as $routeName => $route) {
                 $key =
+                    ''.
                     StringUtil::camelCaseToSeparated($this->extension->getBaseName()).'/'.
                     StringUtil::camelCaseToSeparated($this->getBaseName()).'/'.
                     strtolower($routerName).
