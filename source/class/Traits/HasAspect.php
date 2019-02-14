@@ -3,6 +3,8 @@
 
 namespace Planck\Traits;
 
+use Planck\Exception\DoesNotExist;
+
 trait HasAspect
 {
 
