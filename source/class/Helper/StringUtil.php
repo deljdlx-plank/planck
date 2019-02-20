@@ -29,15 +29,23 @@ class StringUtil
 
 
 
+    public static function escapeRegexp($string)
+    {
+        return preg_quote($string);
+    }
+
 
 
 
     public static function separatedToClassName($string, $separator = '-')
     {
-        return preg_replace_callback('`('.$separator.'|^)(.)`',
-            function($matches) {
 
-                if($matches[1] == '-') {
+        $escapedSeparator = static::escapeRegexp($separator);
+
+        return preg_replace_callback('`('.$escapedSeparator.'|^)(.)`',
+            function($matches) use ($separator) {
+
+                if($matches[1] == $separator) {
                     return '\\'.strtoupper($matches[2]);
                 }
                 else {
@@ -56,9 +64,11 @@ class StringUtil
             $string = ucfirst($string);
         }
 
-        $string = preg_replace_callback('`('.$separator.'.)`', function($matches) {
+        $escapedSeparator = static::escapeRegexp($separator);
 
-            $string = str_replace('-', '', $matches[1]);
+        $string = preg_replace_callback('`('.$escapedSeparator.'.)`', function($matches) use ($separator) {
+
+            $string = str_replace($separator, '', $matches[1]);
             $string = strtoupper($string);
             return $string;
         }, $string);
