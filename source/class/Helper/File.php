@@ -53,12 +53,10 @@ class File
 
         if(!$normalize) {
             $files = glob($pattern, $flags);
-            //sort($files, SORT_NATURAL);
+
         }
         else {
             $temp =  glob($pattern, $flags);
-
-            //sort($temp, SORT_NATURAL);
 
             $files = [];
             foreach ($temp as $path) {
@@ -66,7 +64,8 @@ class File
             }
         }
 
-        foreach (glob(dirname($pattern).'/*', GLOB_NOSORT ) as $dir) {
+        //foreach (glob(dirname($pattern).'/*', GLOB_NOSORT ) as $dir) {
+        foreach (glob(dirname($pattern).'/*', 0 ) as $dir) {
             $files = array_merge($files, static::rglob($dir.'/'.basename($pattern), $flags, $normalize));
         }
 
