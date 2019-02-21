@@ -10,6 +10,7 @@ class StringUtil
     {
 
         $normalized = mb_strtolower($string);
+        $normalized = trim($normalized);
         $normalized = static::removeAccent($normalized);
         $normalized=preg_replace('`\W`', '-', $normalized);
         $normalized=preg_replace('`-+`', '-', $normalized);
