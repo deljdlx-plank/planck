@@ -27,6 +27,15 @@ trait HasLocalResource
     }
 
 
+    /**
+     * @return Package[]
+     */
+    public function getFrontPackages()
+    {
+        return $this->frontPackages;
+    }
+
+
     /*
     //used for development concerns
 
