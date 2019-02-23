@@ -49,7 +49,7 @@
 <div class="page">
     <div class="content">
         <div class="report-details">
-            Created at 2019-02-13 11:24:30        , with PHPMetrics v2.4.1 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
+            Created at 2019-02-23 10:41:15        , with PHPMetrics v2.4.1 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
         </div>
 
 
@@ -92,7 +92,7 @@
                             <path d="M0 0h24v24H0z" fill="none"/>
                             <path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/>
                         </svg>
-                        Violations (11)
+                        Violations (6)
                     </a>
                 </li>
                                 <li>
@@ -239,91 +239,6 @@
 
     var relations = [
     {
-        "name": "\\Planck\\Application",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Phi\\Application\\Application",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Phi\\Core\\Interfaces\\Renderer",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\Exception",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\parent",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\State\\Application\\Execution",
-        "size": 3000,
-        "relations": [
-            "\\Planck\\State\\Application",
-            "\\Planck\\Application",
-            "\\parent",
-            "\\Planck\\State\\Dimension"
-        ]
-    },
-    {
-        "name": "\\Planck\\Session",
-        "size": 3000,
-        "relations": [
-            "\\Phi\\Session\\Session"
-        ]
-    },
-    {
-        "name": "\\Planck\\Extension",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\Exception\\DoesNotExist",
-        "size": 3000,
-        "relations": [
-            "\\Planck\\Exception"
-        ]
-    },
-    {
-        "name": "\\Planck\\Model\\Model",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Phi\\Core\\Renderer",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Phi\\Routing\\Request",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Phi\\Routing\\Router",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\Router",
-        "size": 3000,
-        "relations": [
-            "\\Phi\\Routing\\Router",
-            "\\Planck\\Application",
-            "\\parent",
-            "\\Phi\\Routing\\Route",
-            "\\Planck\\Route"
-        ]
-    },
-    {
         "name": "\\Planck\\ApplicationInstaller",
         "size": 3000,
         "relations": [
@@ -333,22 +248,17 @@
         ]
     },
     {
+        "name": "\\Planck\\Exception",
+        "size": 3000,
+        "relations": []
+    },
+    {
         "name": "\\Phi\\Database\\Driver\\PDO\\Source",
         "size": 3000,
         "relations": []
     },
     {
         "name": "\\Phi\\Database\\Source",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\ApplicationRegistry",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\cast",
         "size": 3000,
         "relations": []
     },
@@ -384,6 +294,16 @@
         "relations": []
     },
     {
+        "name": "\\Phi\\Application\\Application",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\parent",
+        "size": 3000,
+        "relations": []
+    },
+    {
         "name": "\\Planck\\DataLayer",
         "size": 3000,
         "relations": []
@@ -394,6 +314,13 @@
         "relations": [
             "\\Planck\\Exception\\DoesNotExist",
             "\\parent"
+        ]
+    },
+    {
+        "name": "\\Planck\\Exception\\DoesNotExist",
+        "size": 3000,
+        "relations": [
+            "\\Planck\\Exception"
         ]
     },
     {
@@ -416,25 +343,9 @@
         "relations": []
     },
     {
-        "name": "\\Phi\\Core\\Autoloader",
+        "name": "\\Planck\\Helper\\Date",
         "size": 3000,
         "relations": []
-    },
-    {
-        "name": "\\className",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\Module",
-        "size": 3000,
-        "relations": [
-            "\\Planck\\Application",
-            "\\Planck\\Extension",
-            "\\Planck\\Helper\\StringUtil",
-            "\\routerClassName",
-            "\\Planck\\Exception"
-        ]
     },
     {
         "name": "\\Planck\\Helper\\File",
@@ -444,35 +355,6 @@
         ]
     },
     {
-        "name": "\\Phi\\HTML\\CSSFile",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Phi\\HTML\\JavascriptFile",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\ExtensionLoader",
-        "size": 3000,
-        "relations": [
-            "\\Phi\\Core\\Autoloader",
-            "\\Planck\\Exception",
-            "\\extensionName"
-        ]
-    },
-    {
-        "name": "\\extensionName",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Planck\\Helper\\Date",
-        "size": 3000,
-        "relations": []
-    },
-    {
         "name": "\\static",
         "size": 3000,
         "relations": []
@@ -480,22 +362,22 @@
     {
         "name": "\\Planck\\Helper\\StringUtil",
         "size": 3000,
-        "relations": []
+        "relations": [
+            "\\static",
+            "\\self"
+        ]
     },
     {
-        "name": "\\routerClassName",
+        "name": "\\self",
         "size": 3000,
         "relations": []
     },
     {
-        "name": "\\Planck\\Route",
+        "name": "\\Planck\\Session",
         "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Phi\\Routing\\Route",
-        "size": 3000,
-        "relations": []
+        "relations": [
+            "\\Phi\\Session\\Session"
+        ]
     },
     {
         "name": "\\Phi\\Session\\Session",
@@ -503,24 +385,12 @@
         "relations": []
     },
     {
-        "name": "\\Planck\\State\\Application\\Data",
-        "size": 3000,
-        "relations": [
-            "\\Planck\\State\\Application",
-            "\\Planck\\Application",
-            "\\parent"
-        ]
-    },
-    {
-        "name": "\\Planck\\State\\Application",
-        "size": 3000,
-        "relations": [
-            "\\Planck\\State",
-            "\\Planck\\Application"
-        ]
-    },
-    {
         "name": "\\Planck\\State\\Dimension",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Planck\\State\\DimensionValue",
         "size": 3000,
         "relations": []
     },
@@ -533,11 +403,6 @@
             "\\Phi\\Event\\Event",
             "\\Planck\\Exception"
         ]
-    },
-    {
-        "name": "\\Planck\\State\\DimensionValue",
-        "size": 3000,
-        "relations": []
     },
     {
         "name": "\\Phi\\Event\\Event",
@@ -583,13 +448,18 @@
         "name": "\\Planck\\Traits\\IsApplicationObject",
         "size": 3000,
         "relations": [
-            "\\Planck\\ApplicationRegistry",
-            "\\Planck\\Application",
+            "\\Planck\\Application\\ApplicationRegistry",
+            "\\Planck\\Application\\Application",
             "\\self"
         ]
     },
     {
-        "name": "\\self",
+        "name": "\\Planck\\Application\\ApplicationRegistry",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Planck\\Application\\Application",
         "size": 3000,
         "relations": []
     },
@@ -602,7 +472,7 @@
         "name": "\\Planck\\Traits\\Listenable",
         "size": 3000,
         "relations": [
-            "\\Planck\\Application"
+            "\\Planck\\Application\\Application"
         ]
     }
 ];
