@@ -48,6 +48,103 @@ class File
         rmdir($src);
     }
 
+    public function rcopy($source, $dest, $createDir = false, $copySymlink = true, $doOnSymLink = null)
+    {
+        // recursive function to copy
+        // all subdirectories and contents:
+        if(is_dir($source)) {
+
+            if(is_link($source)) {
+                if(is_callable($doOnSymLink)) {
+                    call_user_func_array(
+                        $doOnSymLink,
+                        array($source)
+                    );
+                }
+                if(!$copySymlink) {
+                    return;
+                }
+            }
+
+            $dir_handle=opendir($source);
+            $sourcefolder = basename($source);
+
+            if($createDir) {
+                mkdir($dest."/".$sourcefolder);
+                $destinationPath = $dest."/".$sourcefolder;
+            }
+            else {
+                $destinationPath = $dest;
+            }
+
+            while($file=readdir($dir_handle)){
+                if($file!="." && $file!=".."){
+
+
+
+                    if(is_link($source."/".$file)) {
+                        if(is_callable($doOnSymLink) || is_array($doOnSymLink)) {
+                            call_user_func_array(
+                                $doOnSymLink,
+                                array($source."/".$file)
+                            );
+                        }
+                        if(!$copySymlink) {
+                            continue;
+                        }
+                    }
+
+
+                    if(is_dir($source."/".$file)){
+                        static::rcopy($source."/".$file, $destinationPath, true, $copySymlink, $doOnSymLink);
+                    } else {
+
+                        echo $source."/".$file."\t => \t".$destinationPath."/".$file;
+                        echo "\n";
+
+                        copy($source."/".$file, $destinationPath."/".$file);
+                    }
+                }
+            }
+            closedir($dir_handle);
+        } else {
+            // can also handle simple copy commands
+            copy($source, $dest);
+        }
+    }
+
+
+
+    public static function doOnPathes($path, $callback, $recursive = false)
+    {
+
+        $currentDir = getcwd();
+
+        $path = realpath($path);
+
+        chdir($path);
+
+        $dir = opendir($path);
+        while($entry = readdir($dir)) {
+            if($entry != '.' && $entry != '..' && is_dir($path.'/'.$entry)) {
+                if(is_dir($path.'/'.$entry)) {
+                    chdir($path.'/'.$entry);
+                    $returnValue = $callback($path.'/'.$entry);
+                    if(!$returnValue) {
+                        return;
+                    }
+
+                    if($recursive) {
+                        static::doOnPathes($path.'/'.$entry, $callback, $recursive);
+                    }
+                }
+            }
+        }
+        chdir($currentDir);
+    }
+
+
+
     public static function rglob($pattern, $flags = 0, $normalize = true)
     {
 

@@ -6,14 +6,15 @@ namespace Planck\Helper;
 class StringUtil
 {
 
-    public static function slugify($string)
+    public static function slugify($string, $replacement = '-', $allow = [])
     {
 
         $normalized = mb_strtolower($string);
-        $normalized = trim($normalized);
         $normalized = static::removeAccent($normalized);
-        $normalized=preg_replace('`\W`', '-', $normalized);
-        $normalized=preg_replace('`-+`', '-', $normalized);
+        $normalized = trim($normalized);
+
+        $normalized=preg_replace('`[^A-Za-z0-9\-_'.implode('', (array) $allow).']`', $replacement, $normalized);
+        $normalized=preg_replace('`'.self::escapeRegexp($replacement).'+`', $replacement, $normalized);
         return $normalized;
     }
 
