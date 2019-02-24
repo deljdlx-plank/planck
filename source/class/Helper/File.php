@@ -48,7 +48,7 @@ class File
         rmdir($src);
     }
 
-    public function rcopy($source, $dest, $createDir = false, $copySymlink = true, $doOnSymLink = null)
+    public function rcopy($source, $dest, $createDir = false, $customValidator = null, $copySymlink = true, $doOnSymLink = null)
     {
         // recursive function to copy
         // all subdirectories and contents:
@@ -78,7 +78,14 @@ class File
             }
 
             while($file=readdir($dir_handle)){
-                if($file!="." && $file!=".."){
+                if($file!="." && $file!="..") {
+
+                    if(is_callable($customValidator) || is_array($customValidator)) {
+                        $validate = call_user_func_array($customValidator, array($source."/".$file));
+                        if(!$validate) {
+                            continue;
+                        }
+                    }
 
 
 
@@ -96,7 +103,7 @@ class File
 
 
                     if(is_dir($source."/".$file)){
-                        static::rcopy($source."/".$file, $destinationPath, true, $copySymlink, $doOnSymLink);
+                        static::rcopy($source."/".$file, $destinationPath, true, $customValidator, $copySymlink, $doOnSymLink);
                     } else {
 
                         echo $source."/".$file."\t => \t".$destinationPath."/".$file;
