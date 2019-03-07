@@ -3,6 +3,8 @@
 namespace Planck\Traits;
 
 
+use Planck\Exception\DoesNotExist;
+
 trait IsExtensionObject
 {
     use IsApplicationObject;
@@ -28,7 +30,7 @@ trait IsExtensionObject
     {
         if(!$this->extensionName) {
             $className = get_class($this);
-            $this->extensionName = preg_replace('`(.*?\\\\Extension\\\\.+?)\\\\Module\\\\.*`', '$1', $className);
+            $this->extensionName = preg_replace('`(.*?\\\\Extension\\\\.+?)\\\\.*`', '$1', $className);
         }
         return $this->extensionName;
     }
@@ -43,6 +45,19 @@ trait IsExtensionObject
             $routeName,
             $parameters
         );
+    }
+
+    public function hasExtension()
+    {
+        try {
+            $this->getApplication()->getExtension(
+                $this->getExtensionName()
+            );
+            return true;
+        }
+        catch(DoesNotExist $exception) {
+            return false;
+        }
     }
 
     public function getExtension()

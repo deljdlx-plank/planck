@@ -38,6 +38,11 @@ class StringUtil
 
 
 
+    public static function namespaceToSeparated($namespace, $separator = '-')
+    {
+        return str_replace('\\', $separator, $namespace);
+    }
+
 
     public static function separatedToClassName($string, $separator = '-')
     {
@@ -99,6 +104,10 @@ class StringUtil
 
     public static function getClassBaseName($className)
     {
+        if(is_object($className)) {
+            $className = get_class($className);
+        }
+
         return basename(str_replace(
             '\\', '/',
             $className
