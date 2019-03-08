@@ -44,16 +44,24 @@ class StringUtil
     }
 
 
-    public static function separatedToClassName($string, $separator = '-')
+
+
+    public static function separatedToClassName($string, $separator = '-', $hasNamespace = true)
     {
 
         $escapedSeparator = static::escapeRegexp($separator);
 
         return preg_replace_callback('`('.$escapedSeparator.'|^)(.)`',
-            function($matches) use ($separator) {
+            function($matches) use ($separator, $hasNamespace) {
 
                 if($matches[1] == $separator) {
-                    return '\\'.strtoupper($matches[2]);
+                    if($hasNamespace) {
+                        return '\\'.strtoupper($matches[2]);
+                    }
+                    else {
+                        return strtoupper($matches[2]);
+                    }
+
                 }
                 else {
                     return strtoupper($matches[2]);
@@ -65,7 +73,7 @@ class StringUtil
     }
 
 
-    public static function toCamelCase($string, $separator = '-', $upper = true)
+    public static function toCamelCase($string, $separator = '-', $upper = false)
     {
         if($upper) {
             $string = ucfirst($string);
