@@ -3,6 +3,7 @@
 namespace Planck\Traits;
 
 
+use Planck\Exception;
 use Planck\Exception\DoesNotExist;
 
 trait IsExtensionObject
@@ -19,8 +20,14 @@ trait IsExtensionObject
 
     public function getModuleName()
     {
+
+        $className = get_class($this);
+
+        if(!preg_match('`.*?\\\\Extension\\\\.+?\\\\Module\\\\(.*?)\\\\`', $className)) {
+            throw new Exception('Can not extract module name (Component name : "'.$className.'"');
+        }
+
         if(!$this->moduleName) {
-            $className = get_class($this);
             $this->moduleName = preg_replace('`.*?\\\\Extension\\\\.+?\\\\Module\\\\(.*?)\\\\.*`', '$1', $className);
         }
         return $this->moduleName;
@@ -28,8 +35,14 @@ trait IsExtensionObject
 
     public function getExtensionName()
     {
+
+        $className = get_class($this);
+
+        if(!preg_match('`(.*?\\\\Extension\\\\.+?)\\\\`', $className)) {
+            throw new Exception('Can not extract extension name (Component name : "'.$className.'"');
+        }
+
         if(!$this->extensionName) {
-            $className = get_class($this);
             $this->extensionName = preg_replace('`(.*?\\\\Extension\\\\.+?)\\\\.*`', '$1', $className);
         }
         return $this->extensionName;
